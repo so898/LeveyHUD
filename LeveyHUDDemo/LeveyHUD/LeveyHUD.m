@@ -13,6 +13,9 @@
 #import "LeveyHUDMask.h"
 
 #define MASKOFFSET 30.0f
+#define LeveyHUDWindowWidth ((float)[[UIScreen mainScreen] bounds].size.width)
+#define LeveyHUDWindowHeight ((float)[[UIScreen mainScreen] bounds].size.height)
+
 static LeveyHUD *_sharedHUD = nil;
 
 @implementation LeveyHUD
@@ -34,10 +37,12 @@ static LeveyHUD *_sharedHUD = nil;
         _label.font = [UIFont boldSystemFontOfSize:16.0f];
         [self addSubview:_label];
         
-        _topMask = [[LeveyHUDMask alloc] initWithFrame:CGRectMake(0, -30, 320, 226)];
+        CGFloat maskHeight = (LeveyHUDWindowHeight - _label.frame.size.height) / 2;
+        
+        _topMask = [[LeveyHUDMask alloc] initWithFrame:CGRectMake(0, -MASKOFFSET, LeveyHUDWindowWidth, maskHeight - 15)];
         _topMask.hidden = YES;
         [self addSubview:_topMask];
-        _bottomMask = [[LeveyHUDMask alloc] initWithFrame:CGRectMake(0, 284, 320, 226.0f)];
+        _bottomMask = [[LeveyHUDMask alloc] initWithFrame:CGRectMake(0, maskHeight - 15 + MASKOFFSET * 2 + _label.frame.size.height, LeveyHUDWindowWidth, maskHeight + 15)];
         _bottomMask.transform = CGAffineTransformMakeRotation(180 *M_PI / 180.0);
         _bottomMask.hidden = YES;
         [self addSubview:_bottomMask];
